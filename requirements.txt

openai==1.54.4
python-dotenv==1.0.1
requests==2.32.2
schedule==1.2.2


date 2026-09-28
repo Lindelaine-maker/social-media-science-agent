@@ -1,0 +1,136 @@
+# Agente Integrador de Conteúdo Científico e Tecnológico
+
+Este projeto é uma base profissional para um agente de automação de conteúdo para redes sociais com foco em ciência, química e tecnologia.
+
+Ele foi pensado para ajudar você a:
+
+- gerar ideias de posts em massa
+- criar roteiros com tom científico e educativo
+- adaptar textos para Instagram, LinkedIn, X e TikTok
+- usar IA para produzir conteúdo mais estratégico
+- preparar conteúdo para agendamento e publicação
+
+## Stack principal
+
+- Python 3.11+
+- OpenAI API (opcional, para geração inteligente)
+- dotenv para configuração de ambiente
+- Classe de adaptadores para diferentes redes sociais
+- Módulo de calendário e agendamento
+
+## Estrutura do projeto
+
+```bash
+.
+├── README.md
+├── requirements.txt
+├── .env.example
+├── main.py
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── content_generator.py
+│   ├── social_platforms.py
+│   ├── scheduler.py
+│   └── agent.py
+├── data/
+│   └── content_calendar.json
+└── logs/
+    └── .gitkeep
+```
+
+## Instalação
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# ou .venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+```
+
+## Configuração
+
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com as informações desejadas:
+
+```env
+OPENAI_API_KEY=
+CONTENT_LANGUAGE=pt-BR
+TIMEZONE=America/Sao_Paulo
+POST_SCHEDULE_HOUR=09:00
+TWITTER_API_KEY=
+TWITTER_API_SECRET=
+LINKEDIN_CLIENT_ID=
+LINKEDIN_CLIENT_SECRET=
+INSTAGRAM_ACCESS_TOKEN=
+```
+
+## Como usar
+
+### Gerar um post único
+
+```bash
+python main.py generate --theme "quimica" --platform "instagram"
+```
+
+### Gerar calendário
+
+```bash
+python main.py calendar --theme "ciência e tecnologia" --count 5
+```
+
+### Publicar conteúdo simulado
+
+```bash
+python main.py publish --theme "tecnologia" --platform "linkedin"
+```
+
+### Agendar conteúdo
+
+```bash
+python main.py schedule --theme "ciência" --platform "instagram" --time "09:30"
+```
+
+### Ajuda
+
+```bash
+python main.py --help
+```
+
+## Exemplo de saída
+
+```json
+{
+  "title": "A química por trás dos materiais do futuro",
+  "theme": "quimica",
+  "platform": "instagram",
+  "caption": "A química está por trás de muitos avanços que impactam nossa rotina...",
+  "hashtags": ["#Quimica", "#Tecnologia", "#Sustentabilidade", "#Inovacao"],
+  "image_prompt": "Moléculas coloridas, laboratório moderno e visual futurista...",
+  "cta": "Salve esse post para aprender mais sobre inovação em química."
+}
+```
+
+## Funcionalidades principais
+
+- Geração de conteúdo por tema
+- Adaptação automática para cada rede social
+- Suporte a IA por OpenAI
+- Simulação de envios para Instagram, X, LinkedIn e TikTok
+- Planejamento de calendário editorial
+- Agenda de publicações
+
+## Próximos passos recomendados
+
+- conectar APIs reais das redes sociais
+- adicionar autenticação OAuth para LinkedIn e X
+- usar IA para criar imagens e vídeos curtos
+- criar painel web para revisar conteúdos antes da publicação
+- sistematizar uma rotina editorial por semana
+
+## Licença
+
+MIT

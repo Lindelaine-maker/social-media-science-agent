@@ -1,0 +1,25 @@
+from __future__ import annotations
+
+import os
+from typing import Optional
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+class Settings:
+    OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
+    CONTENT_LANGUAGE: str = os.getenv("CONTENT_LANGUAGE", "pt-BR")
+    TIMEZONE: str = os.getenv("TIMEZONE", "America/Sao_Paulo")
+    POST_SCHEDULE_HOUR: str = os.getenv("POST_SCHEDULE_HOUR", "09:00")
+
+    TWITTER_API_KEY: Optional[str] = os.getenv("TWITTER_API_KEY")
+    TWITTER_API_SECRET: Optional[str] = os.getenv("TWITTER_API_SECRET")
+    LINKEDIN_CLIENT_ID: Optional[str] = os.getenv("LINKEDIN_CLIENT_ID")
+    LINKEDIN_CLIENT_SECRET: Optional[str] = os.getenv("LINKEDIN_CLIENT_SECRET")
+    INSTAGRAM_ACCESS_TOKEN: Optional[str] = os.getenv("INSTAGRAM_ACCESS_TOKEN")
+
+
+settings = Settings()

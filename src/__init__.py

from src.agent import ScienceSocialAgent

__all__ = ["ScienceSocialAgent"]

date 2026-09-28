@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from typing import Dict, List
+
+from src.content_generator import ContentGenerator
+from src.scheduler import Scheduler
+from src.social_platforms import build_platform_adapter
+
+
+class ScienceSocialAgent:
+    """Agente principal para geração e agendamento de conteúdo."""
+
+    def __init__(self):
+        self.generator = ContentGenerator()
+        self.scheduler = Scheduler()
+
+    def generate_post(self, theme: str, platform: str) -> Dict[str, object]:
+        return self.generator.generate(theme, platform)
+
+    def generate_calendar(self, theme: str, count: int = 5) -> List[Dict[str, object]]:
+        return self.generator.generate_calendar(theme, count)
+
+    def publish(self, theme: str, platform: str) -> Dict[str, object]:
+        content = self.generate_post(theme, platform)
+        adapter = build_platform_adapter(platform)
+        return adapter.publish(content)
+
+    def schedule_post(self, theme: str, platform: str, time: str) -> Dict[str, object]:
+        content = self.generate_post(theme, platform)
+        return self.scheduler.schedule_at(content, time)
+

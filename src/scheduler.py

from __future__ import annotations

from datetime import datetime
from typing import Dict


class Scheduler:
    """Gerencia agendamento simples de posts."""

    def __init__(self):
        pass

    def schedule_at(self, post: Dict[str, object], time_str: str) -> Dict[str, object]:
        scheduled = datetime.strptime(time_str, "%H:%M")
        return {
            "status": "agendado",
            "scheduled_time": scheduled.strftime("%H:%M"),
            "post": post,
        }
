@@ -1,0 +1,50 @@
+from __future__ import annotations
+
+from typing import Dict
+
+
+class SocialPlatformAdapter:
+    """Adaptador base para redes sociais."""
+
+    def __init__(self, platform_name: str):
+        self.platform_name = platform_name.lower()
+
+    def publish(self, content: Dict[str, object]) -> Dict[str, object]:
+        return {
+            "status": "simulado",
+            "platform": self.platform_name,
+            "message": f"Conteúdo preparado para {self.platform_name} e enviado em modo simulado.",
+            "payload": content,
+        }
+
+
+class InstagramAdapter(SocialPlatformAdapter):
+    def __init__(self):
+        super().__init__("instagram")
+
+
+class LinkedInAdapter(SocialPlatformAdapter):
+    def __init__(self):
+        super().__init__("linkedin")
+
+
+class XAdapter(SocialPlatformAdapter):
+    def __init__(self):
+        super().__init__("x")
+
+
+class TikTokAdapter(SocialPlatformAdapter):
+    def __init__(self):
+        super().__init__("tiktok")
+
+
+def build_platform_adapter(platform: str):
+    mapping = {
+        "instagram": InstagramAdapter,
+        "linkedin": LinkedInAdapter,
+        "x": XAdapter,
+        "twitter": XAdapter,
+        "tiktok": TikTokAdapter,
+    }
+    adapter_cls = mapping.get(platform.lower(), InstagramAdapter)
+    return adapter_cls()
