@@ -1,0 +1,52 @@
+main.py
+import argparse
+from pprint import pprint
+
+from src.agent import ScienceSocialAgent
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Agente integrador para ciência, química e tecnologia em redes sociais."
+    )
+    parser.add_argument("--theme", type=str, default="ciência e tecnologia")
+    parser.add_argument("--platform", type=str, default="instagram")
+    parser.add_argument("--count", type=int, default=3)
+    parser.add_argument("--time", type=str, default="09:00")
+    parser.add_argument("command", nargs="?", default="generate", help="generate, calendar, publish, schedule, web")
+
+    args = parser.parse_args()
+    agent = ScienceSocialAgent()
+
+    if args.command == "generate":
+        result = agent.generate_post(theme=args.theme, platform=args.platform)
+        pprint(result)
+        return
+
+    if args.command == "calendar":
+        result = agent.generate_calendar(theme=args.theme, count=args.count)
+        pprint(result)
+        return
+
+    if args.command == "publish":
+        result = agent.publish(theme=args.theme, platform=args.platform)
+        pprint(result)
+        return
+
+    if args.command == "schedule":
+        result = agent.schedule_post(theme=args.theme, platform=args.platform, time=args.time)
+        pprint(result)
+        return
+
+    if args.command == "web":
+        from app import app
+        app.run(host="0.0.0.0", port=5000, debug=True)
+        return
+
+    default_result = agent.generate_post(theme=args.theme, platform=args.platform)
+    pprint(default_result)
+
+
+if __name__ == "__main__":
+    main()
+

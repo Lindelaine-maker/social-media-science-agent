@@ -1,0 +1,117 @@
+# Agente Integrador para Ciência, Química e Tecnologia
+
+Este projeto evoluiu para uma versão operacional com interface web, geração de conteúdos por IA, gerenciamento de calendário e armazenamento local de posts.
+
+## Funcionalidades
+
+- Geração automática de posts para ciência, química e tecnologia
+- Ajuste por plataforma: Instagram, LinkedIn, X e TikTok
+- Simulação de publicação em dashboard web
+- Agendamento e organização de posts em banco SQLite local
+- Ambiente com fallback sem IA para funcionar mesmo sem chave OpenAI
+- Dashboard simples para revisar e gerir conteúdo
+
+## Estrutura
+
+```bash
+.
+├── README.md
+├── requirements.txt
+├── .env.example
+├── main.py
+├── app.py
+├── templates/
+│   └── index.html
+├── static/
+│   └── styles.css
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── content_generator.py
+│   ├── db.py
+│   ├── scheduler.py
+│   ├── social_platforms.py
+│   └── agent.py
+├── data/
+│   └── content.db
+└── logs/
+    └── .gitkeep
+```
+
+## Instalação
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# ou .venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+```
+
+## Configuração
+
+```bash
+cp .env.example .env
+```
+
+Exemplo:
+
+```env
+OPENAI_API_KEY=
+CONTENT_LANGUAGE=pt-BR
+TIMEZONE=America/Sao_Paulo
+POST_SCHEDULE_HOUR=09:00
+```
+
+## Como usar
+
+### Dashboard web
+
+```bash
+python app.py
+```
+
+Acesse:
+
+```bash
+http://127.0.0.1:5000
+```
+
+### CLI para gerar um post
+
+```bash
+python main.py generate --theme "quimica" --platform "instagram"
+```
+
+### CLI para calendário
+
+```bash
+python main.py calendar --theme "ciência e tecnologia" --count 5
+```
+
+### CLI para web app
+
+```bash
+python main.py web
+```
+
+## Funcionamento do painel
+
+No painel você pode:
+
+- escolher o tema
+- definir a rede social
+- gerar um post em poucos segundos
+- revisar o conteúdo em uma lista local
+- organizar os posts por status e plataforma
+
+## Próximos passos recomendados
+
+- autenticação real para Instagram, LinkedIn e X
+- agendamento automático em background
+- geração de imagens por IA
+- publicação direta via APIs
+- painel com filtros e aprovação manual
+
+## Licença
+
+MIT

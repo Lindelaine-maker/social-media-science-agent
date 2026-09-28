@@ -1,0 +1,21 @@
+src/scheduler.py
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Dict
+
+
+class Scheduler:
+    """Gerencia agendamento simples de posts."""
+
+    def __init__(self):
+        pass
+
+    def schedule_at(self, post: Dict[str, object], time_str: str) -> Dict[str, object]:
+        scheduled = datetime.strptime(time_str, "%H:%M")
+        return {
+            "status": "agendado",
+            "scheduled_time": scheduled.strftime("%H:%M"),
+            "post": post,
+        }
+

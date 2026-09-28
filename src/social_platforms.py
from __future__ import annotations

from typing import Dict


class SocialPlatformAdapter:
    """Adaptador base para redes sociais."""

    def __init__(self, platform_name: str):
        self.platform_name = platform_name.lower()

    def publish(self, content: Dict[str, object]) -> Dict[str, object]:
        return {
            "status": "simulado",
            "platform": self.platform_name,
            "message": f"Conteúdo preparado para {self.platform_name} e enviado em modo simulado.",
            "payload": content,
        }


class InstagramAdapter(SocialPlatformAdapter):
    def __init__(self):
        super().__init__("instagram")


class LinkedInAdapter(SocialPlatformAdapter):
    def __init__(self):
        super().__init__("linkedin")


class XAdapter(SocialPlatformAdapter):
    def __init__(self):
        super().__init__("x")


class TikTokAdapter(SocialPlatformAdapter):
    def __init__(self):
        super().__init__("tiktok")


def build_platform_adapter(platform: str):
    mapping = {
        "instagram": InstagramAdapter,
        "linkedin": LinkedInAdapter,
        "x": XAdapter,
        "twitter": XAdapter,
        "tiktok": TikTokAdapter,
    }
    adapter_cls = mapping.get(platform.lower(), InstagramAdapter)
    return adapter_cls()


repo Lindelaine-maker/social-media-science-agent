@@ -1,0 +1,103 @@
+src/content_generator.py
+from __future__ import annotations
+
+from typing import Dict, List
+
+from openai import OpenAI
+
+from src.config import settings
+
+
+class ContentGenerator:
+    """Gera conteúdo científico e tecnológico com fallback sem IA."""
+
+    def __init__(self):
+        self.client = OpenAI(api_key=settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None
+
+    def _normalize_theme(self, theme: str) -> str:
+        normalized = theme.lower().strip()
+        if "quim" in normalized:
+            return "quimica"
+        if "tec" in normalized:
+            return "tecnologia"
+        if "cien" in normalized:
+            return "ciência"
+        return "ciência e tecnologia"
+
+    def _fallback_post(self, theme: str, platform: str) -> Dict[str, object]:
+        theme_key = self._normalize_theme(theme)
+        title_map = {
+            "ciência": "A ciência que está moldando o futuro",
+            "quimica": "A química por trás das soluções sustentáveis",
+            "tecnologia": "Tecnologia que transforma a rotina moderna",
+            "ciência e tecnologia": "Ciência e tecnologia em movimento",
+        }
+        title = title_map.get(theme_key, "Inovação em ciência e tecnologia")
+        caption = (
+            f"{title}\n\n"
+            f"A interseção entre {theme_key} e a vida cotidiana abre novas possibilidades para a inovação. "
+            f"Quando conhecimento, criatividade e aplicação se encontram, surgem soluções que impactam sociedade, saúde e trabalho."
+        )
+
+        platform_cta = {
+            "instagram": "Salve este post para revisitar depois e compartilhe com alguém que gosta de aprender.",
+            "linkedin": "Comente sua visão sobre esse tema e compartilhe com sua rede.",
+            "x": "Qual tema você quer ver em nosso próximo conteúdo?",
+            "tiktok": "Curtiu? Siga para conteúdos curtos e incríveis sobre ciência e tecnologia.",
+        }
+
+        hashtags = {
+            "ciência": ["#Ciencia", "#Pesquisa", "#EducacaoCientifica", "#Inovacao"],
+            "quimica": ["#Quimica", "#QuimicaAplicada", "#Sustentabilidade", "#Inovacao"],
+            "tecnologia": ["#Tecnologia", "#IA", "#Automacao", "#Futuro"],
+            "ciência e tecnologia": ["#Ciencia", "#Tecnologia", "#Inovacao", "#Futuro"],
+        }
+
+        return {
+            "title": title,
+            "theme": theme_key,
+            "platform": platform.lower(),
+            "caption": caption + "\n\n" + platform_cta.get(platform.lower(), "Siga para acompanhar novidades."),
+            "hashtags": hashtags.get(theme_key, ["#Ciencia", "#Tecnologia", "#Aprendizagem"]),
+            "image_prompt": f"Visual futurista com {theme_key}, elementos de inovação, laboratório moderno e ambiente tecnológico de alta qualidade.",
+            "cta": "Comenta 'ciência' para receber mais conteúdos dessa área.",
+        }
+
+    def generate(self, theme: str, platform: str) -> Dict[str, object]:
+        if not self.client:
+            return self._fallback_post(theme, platform)
+
+        prompt = (
+            f"Crie um post para redes sociais sobre {theme}, com foco em {platform}. "
+            "Produza um título, legenda em português do Brasil, hashtags relevantes, texto de CTA e um prompt para imagem. "
+            "O tom deve ser educativo, moderno e inspirador."
+        )
+
+        response = self.client.responses.create(
+            model="gpt-4o-mini",
+            input=prompt,
+        )
+
+        output = response.output_text.strip()
+        return {
+            "title": "Conteúdo gerado por IA",
+            "theme": self._normalize_theme(theme),
+            "platform": platform.lower(),
+            "caption": output,
+            "hashtags": ["#Ciencia", "#Tecnologia", "#Inovacao"],
+            "image_prompt": f"Capa visual para {theme} em estilo moderno e premium.",
+            "cta": "Siga para ver mais conteúdos sobre inovação.",
+        }
+
+    def generate_calendar(self, theme: str, count: int = 5) -> List[Dict[str, object]]:
+        ideas = []
+        themes = [theme, "ciência", "quimica", "tecnologia", "inovação"]
+        for index in range(min(count, len(themes))):
+            item_theme = themes[index]
+            ideas.append({
+                "day": f"Dia {index + 1}",
+                "theme": self._normalize_theme(item_theme),
+                "post": self.generate(item_theme, "instagram"),
+            })
+        return ideas
+

@@ -1,0 +1,84 @@
+templates/index.html
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agente Científico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Agente Integrador</p>
+          <h1>Ciência, Química e Tecnologia</h1>
+        </div>
+      </header>
+
+      <section class="panel">
+        <h2>Gerar novo conteúdo</h2>
+        <form method="POST" class="form-grid">
+          <label>
+            Tema
+            <select name="theme">
+              <option value="ciência e tecnologia">Ciência e Tecnologia</option>
+              <option value="ciência">Ciência</option>
+              <option value="quimica">Química</option>
+              <option value="tecnologia">Tecnologia</option>
+            </select>
+          </label>
+
+          <label>
+            Plataforma
+            <select name="platform">
+              <option value="instagram">Instagram</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="x">X</option>
+              <option value="tiktok">TikTok</option>
+            </select>
+          </label>
+
+          <button type="submit">Gerar post</button>
+        </form>
+      </section>
+
+      {% if content %}
+      <section class="post-card">
+        <div class="card-header">
+          <span class="tag">{{ content["platform"] }}</span>
+          <span class="tag secondary">{{ content["theme"] }}</span>
+        </div>
+        <h3>{{ content["title"] }}</h3>
+        <p class="caption">{{ content["caption"] }}</p>
+        <div class="hashtags">
+          {% for tag in content["hashtags"] %}
+          <span>#{{ tag.lstrip('#') }}</span>
+          {% endfor %}
+        </div>
+        <p><strong>Prompt da imagem:</strong> {{ content["image_prompt"] }}</p>
+        <p><strong>CTA:</strong> {{ content["cta"] }}</p>
+      </section>
+      {% endif %}
+
+      <section class="panel">
+        <h2>Posts salvos</h2>
+        <div class="posts-grid">
+          {% for post in posts %}
+          <article class="mini-card">
+            <div class="card-header">
+              <span class="tag">{{ post["platform"] }}</span>
+              <span class="tag secondary">{{ post["status"] }}</span>
+            </div>
+            <h3>{{ post["title"] }}</h3>
+            <p>{{ post["caption"][:180] }}...</p>
+            <small>{{ post["theme"] }} • {{ post["created_at"] }}</small>
+          </article>
+          {% else %}
+          <p>Nenhum post gerado ainda.</p>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
